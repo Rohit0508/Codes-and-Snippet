@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct pair{
+    int first;
+    int second;
+};
+int comp(struct pair*p1,struct pair*p2){
+    if(p2->second==p1->second) return p1->first>p2->first;
+    return p2->second<p1->second;
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int start[n];
+    int end[n];
+    struct pair times[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&start[i]);
+    }
+    for(int i=0;i<n;i++){
+        scanf("%d",&end[i]);
+    }
+    for(int i=0;i<n;i++){
+        times[i].first=start[i];
+        times[i].second=end[i];
+    }
+    qsort(times, n , sizeof(struct pair), comp);
+    int ans=1;
+    int curr_s=times[0].first;
+    int curr_end=times[0].second;
+    for(int i=1;i<n;i++){
+        if(times[i].first>=curr_end){
+            ans++;
+            curr_end=times[i].second;
+        }
+    }
+    printf("%d",ans);
+    
+    return 0;
+}

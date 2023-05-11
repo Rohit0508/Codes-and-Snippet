@@ -1,0 +1,57 @@
+int solve_mem(int index,vector<int>&nums,vector<int>&weights,int weight){
+    if(index<0) return 0;
+    if(weight<0) return 0;
+    if(nums[index]<=weight){
+        return max(solve_mem(index-1,nums,weights,weight-nums[index])+weights[index],solve_mem(index-1,nums,weights,weight));
+    }
+    else {
+        return solve_mem(index-1,nums,weights,weight);
+    }
+
+}
+int solve_tab(vector<int>&nums,vector<int>&weights,int weight){
+    vector<vector<int>>dp(nums.size()+1,vector<int>(weight+1,0));
+    // vector<vector<int>>sel(nums.size()+1,vector<int>(weight+1,0));
+    for(int i=1;i<=nums.size();i++){
+        for(int j=1;j<=weight;j++){
+            if(nums[i-1]<=j) {
+                int inc=dp[i-1][j-nums[i-1]]+weights[i-1];
+                int exc=dp[i-1][j];
+                if(inc>exc){
+                    // sel[i][j]=1;
+                }
+                dp[i][j]=max(inc,exc);
+            }
+            
+            else dp[i][j]=dp[i-1][j];
+        }
+    }
+    for(int i=0;i<dp.size();i++){
+        for(int j=0;j<dp[i].size();j++){
+            cout<<dp[i][j]<<" ";
+        }
+        cout<<"\n";
+    }
+    
+    return dp[nums.size()][weight];
+}
+void solve(){
+     int n ;
+     cin >> n;
+     vector<int>nums;
+     for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        nums.push_back(x);
+     }
+     vector<int>weights;
+     for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        weights.push_back(x);
+     }
+     int weight;
+     cin>>weight;
+     // vector<vector<int>>dp(n+1,vector<int>(weights+1,-1))
+     cout<<solve_tab(nums,weights,weight)<<endl;
+}
