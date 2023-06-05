@@ -1,0 +1,41 @@
+ void segment_tree(vector<int>&a,int node,int st,int en,vector<int>&tree){
+    if(st==en){
+        tree[node]=a[st];
+        return ;
+    }
+    int mid=(st+en)/2;
+    segment_tree(a,2*node,st,mid,tree);
+    segment_tree(a,2*node+1,mid+1,en,tree);
+    // assuming 1 based indexing ......
+    // process
+    tree[node]=tree[2*node]+tree[2*node+1];
+  }
+
+  int query(int node,int st,int en,int l,int r,vector<int>&tree){
+    // query in range l to r.......
+    if(l>en||r<st){
+        return 0;
+    }
+    if(l<=st&&r>=en){
+        return tree[node];
+    }
+    int mid=(st+en)/2;
+    int q1=query(2*node,st,mid,l,r,tree);
+    int q2=query(2*node+1,mid+1,en,l,r,tree);
+    return (q1+q2);
+  }
+
+  void update(int node,int st,int en,int ind,int val,vector<int>&tree,vector<int>&a){
+    if(st==en){
+        a[ind]=val;
+        tree[node]=val;
+        return;
+    }
+    int mid=(st+en)/2;
+    if(ind<=mid)
+    update(2*node,st,mid,ind,val,tree,a);
+    else
+        update(2*node+1,mid+1,en,ind,val,tree,a);
+
+    tree[node]=tree[2*node]+tree[2*node+1];
+  }
