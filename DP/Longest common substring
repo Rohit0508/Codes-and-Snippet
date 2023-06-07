@@ -1,0 +1,37 @@
+ void substring(string s1,string s2){
+        vector<string>ds;
+        string str="";
+        int n=s1.size();
+        int m=s2.size();
+        int ind1,ind2;
+        int ans=0;
+        vector<vector<int>>dp(n+1,vector<int>(m+1,0));
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(s1[i-1]==s2[j-1]){
+                    dp[i][j]=1+dp[i-1][j-1];
+                    
+                }
+                else{
+
+                    dp[i][j]=0;
+
+                }
+                ans=max(ans,dp[i][j]);
+                if(ans==dp[i][j]){
+                    ind1=i;
+                    ind2=j;
+                }
+            }
+        }
+
+// print the substring***************
+        while(dp[ind1][ind2]>0){
+            str+=s1[ind1-1];
+            ind1--;
+            ind2--;
+        }
+        reverse(all(str));
+        cout<<str;
+        cout<< ans;
+  }
